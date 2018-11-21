@@ -4,6 +4,6 @@ const { signup, signin } = require("../handlers/auth");
 
 router.post("/signup", signup);
 router.post("/signin", signin);
-router.get('/users/:id',signin)
+router.get('/api/users/:id')
 
 module.exports = router;
