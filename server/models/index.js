@@ -14,3 +14,4 @@ mongoose.connect("mongodb://mido:mido2018@ds261253.mlab.com:61253/warbler",{
 });
 module.exports.User = require('./user');
 module.exports.Message = require('./message');
+module.exports.Post = require('./post');
