@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const Comment = require('./comment');
 const User = require("./user");
 
 const postSchema = new mongoose.Schema(
@@ -9,8 +10,7 @@ const postSchema = new mongoose.Schema(
 
     img: {
         type: String,
-     
-
+  
     },
     like:{
       type: Number
@@ -20,6 +20,10 @@ const postSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User"
     },
+    comments: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"Comment"
+    }]
   },
   {
     timestamps: true

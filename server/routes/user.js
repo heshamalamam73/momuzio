@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
+const Comments = require('./post')
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -25,21 +26,19 @@ const userSchema = new mongoose.Schema({
       ref: "Message"
     }
   ],
-  comments: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref:"Comment"
-    },
-    
-  ],
   posts: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref:"Post"
-    },
-    
+    }
   ],
-
+  comments: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref:"Comment"
+    }
+  ],
+  
 });
 
 userSchema.pre("save", async function(next) {

@@ -3,6 +3,7 @@ const router = express.Router({ mergeParams: true });
 
 const {
   createPost,
+  editPost,
   getPost,
   deletePost
 } = require("../handlers/posts");
@@ -11,9 +12,18 @@ const {
 router.route("/").post(createPost);
 
 // prefix - /api/users/:id/posts/:post_id
+
+    
 router
-  .route("/:post_id")
+  .route("/:postId")
   .get(getPost)
-  .delete(deletePost);
+  .delete(deletePost)
+  .put(editPost)
+ 
+
+  
+
+           
 
 module.exports = router;
+

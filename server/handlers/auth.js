@@ -65,3 +65,35 @@ exports.signup = async function(req, res, next) {
     });
   }
 };
+exports.getUser = async function(req, res ,next) {
+  try{
+    let user = await db.User.findById(req.params.userId)
+
+    .populate("posts",{
+      text:true,
+      img:true,
+      like:true,
+      comments:true,
+    })
+    .populate("comments",{
+      username: true,
+      profileImg:true
+    })
+  
+    return res.status(200).json(user);
+
+  }catch(err){
+    return next(err);
+
+  }
+};
+exports.getUsers = async function(req, res ,next) {
+  try{
+    let users = await db.User.find();
+    return res.status(200).json(users);
+
+  }catch(err){
+    return next(err);
+
+  }
+};

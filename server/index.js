@@ -7,6 +7,8 @@ const errorHandler = require("./handlers/error");
 const authRoutes = require("./routes/auth");
 const messagesRoutes = require('./routes/messages');
 const postsRoutes = require('./routes/posts');
+const commentsRoutes = require('./routes/comments');
+const methodOverride = require("method-override");
 
 const db = require("./models");
 const {ensureCorrectUser, loginRequired}= require('./middleware/auth');
@@ -15,30 +17,59 @@ const PORT = process.env.PORT || 8081;
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use("/api/auth", authRoutes);
 
+
+
+
+app.use("/api/auth", authRoutes);
 app.use(
   "/api/users/:id/posts",
   loginRequired,
-  ensureCorrectUser,
-  postsRoutes
+  postsRoutes,
+
   );
 
 app.use(
-  "/api/users/:id/messages",
+  "/api/users/:id/posts/:id/comments",
   loginRequired,
-  ensureCorrectUser,
-  messagesRoutes
+  authRoutes,
+  commentsRoutes,
   );
+  // app.use(
+  //   "/api/comments/:id",
+  //   loginRequired,
+  //   commentsRoutes,
+  //   );
+  
+
+
+
+
+
+
+
+// app.use(
+//   "/api/users/:id/messages",
+//   loginRequired,
+//   ensureCorrectUser,
+//   messagesRoutes
+//   );
   ///// posts will be her 
   app.get("/api/posts", loginRequired, async function(req, res, next) {
     try {
       let posts = await db.Post.find()
         .sort({ createdAt: "desc" })
+        .populate("comments",{
+          text: true,
+          commentName:true,
+          commentImg: true,
+          user:true
+        })
         .populate("user", {
           username: true,
           profileImg: true,
-          _id:true
+          _id:true,
+          
         });
       return res.status(200).json(posts);
     } catch (err) {
@@ -50,20 +81,20 @@ app.use(
   //////////
 
   
-app.get("/api/messages", loginRequired, async function(req, res, next) {
-  try {
-    let messages = await db.Message.find()
-      .sort({ createdAt: "desc" })
-      .populate("user", {
-        username: true,
-        profileImg: true,
-        _id:true
-      });
-    return res.status(200).json(messages);
-  } catch (err) {
-    return next(err);
-  }
-});
+// app.get("/api/messages", loginRequired, async function(req, res, next) {
+//   try {
+//     let messages = await db.Message.find()
+//       .sort({ createdAt: "desc" })
+//       .populate("user", {
+//         username: true,
+//         profileImg: true,
+//         _id:true
+//       });
+//     return res.status(200).json(messages);
+//   } catch (err) {
+//     return next(err);
+//   }
+// });
 
 
 
